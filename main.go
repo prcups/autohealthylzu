@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"flag"
 	"github.com/chromedp/cdproto/network"
 	"github.com/chromedp/chromedp"
 	"github.com/thedevsaddam/gojsonq/v2"
@@ -20,12 +21,6 @@ type ST struct {
 	Data  string `json:data`
 }
 
-const (
-	cardID   string = "学号"
-	username        = "用户名"
-	password        = "密码"
-)
-
 var (
 	st          ST
 	accessToken string
@@ -33,6 +28,9 @@ var (
 	md5         string
 	info        map[string]interface{}
 	err         error
+	cardID      string
+	username    string
+	password    string
 )
 
 func GetST() chromedp.ActionFunc {
@@ -236,6 +234,20 @@ func Submit() chromedp.ActionFunc {
 }
 
 func main() {
+	flag.StringVar(&cardID, "id", "", "your card id")
+	flag.StringVar(&username, "username", "", "your username (no need to input @lzu.edu.cn)")
+	flag.StringVar(&password, "password", "", "your password")
+	flag.Parse()
+	if cardID == "" {
+		log.Fatal("card id is empty")
+	}
+	if username == "" {
+		log.Fatal("username is empty")
+	}
+	if password == "" {
+		log.Fatal("password is empty")
+	}
+
 	ctx, _ := chromedp.NewExecAllocator(
 		context.Background(),
 		chromedp.Flag("headless", false),
