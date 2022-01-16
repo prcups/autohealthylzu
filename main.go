@@ -84,7 +84,7 @@ func GetST() chromedp.ActionFunc {
 		if err != nil {
 			return err
 		}
-		log.Println("st=" + st.Data)
+		//log.Println("st=" + st.Data)
 
 		return nil
 	}
@@ -105,7 +105,7 @@ func GetMD5() chromedp.ActionFunc {
 		if !ok {
 			return errors.New("accessToken Invaild")
 		}
-		log.Println("accesstoken=" + accessToken)
+		//log.Println("accesstoken=" + accessToken)
 
 		req, err = http.NewRequest("POST", "https://appservice.lzu.edu.cn/dailyReportAll/api/encryption/getMD5",
 			strings.NewReader("cardId="+cardID))
@@ -127,7 +127,7 @@ func GetMD5() chromedp.ActionFunc {
 		if !ok {
 			return errors.New("MD5 Invaild")
 		}
-		log.Println("md5=" + md5)
+		//log.Println("md5=" + md5)
 
 		return nil
 	}
@@ -159,7 +159,7 @@ func GetInfo() chromedp.ActionFunc {
 		if err != nil {
 			return err
 		}
-		log.Printf("info=%+v\n", info)
+		//log.Printf("info=%+v\n", info)
 
 		return nil
 	}
@@ -212,7 +212,7 @@ func Submit() chromedp.ActionFunc {
 		postForm += "&initLng=" + handleValue(info["initLng"])
 		postForm += "&initLat=" + handleValue(info["initLat"])
 		postForm += "&dwfs=" + handleValue(info["dwfs"])
-		log.Println("send=" + postForm)
+		//log.Println("send=" + postForm)
 
 		req, err = http.NewRequest("POST", "https://appservice.lzu.edu.cn/dailyReportAll/api/grtbMrsb/submit",
 			strings.NewReader(postForm))
