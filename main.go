@@ -79,7 +79,10 @@ func GetST() chromedp.ActionFunc {
 			return err
 		}
 		resStr, _ := ioutil.ReadAll(res.Body)
-		json.Unmarshal(resStr, &st)
+		err = json.Unmarshal(resStr, &st)
+		if err != nil {
+			return err
+		}
 		log.Println("st=" + st.Data)
 
 		return nil
@@ -248,13 +251,8 @@ func main() {
 		log.Fatal("password is empty")
 	}
 
-	ctx, _ := chromedp.NewExecAllocator(
+	ctx, _ := chromedp.NewContext(
 		context.Background(),
-		chromedp.Flag("headless", false),
-	)
-
-	ctx, _ = chromedp.NewContext(
-		ctx,
 		chromedp.WithLogf(log.Printf),
 	)
 	defer chromedp.Cancel(ctx)
