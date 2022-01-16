@@ -13,10 +13,11 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+	"time"
 )
 
 type ST struct {
-	State bool   `json:state`
+	State int    `json:state`
 	Msg   string `json:msg`
 	Data  string `json:data`
 }
@@ -230,8 +231,15 @@ func Submit() chromedp.ActionFunc {
 		if err != nil {
 			return err
 		}
-		log.Println(string(resStr))
-
+		code, ok := gojsonq.New().FromString(string(resStr)).Find("message").(string)
+		if !ok {
+			return errors.New("submit answer invalid")
+		}
+		if code != "成功" {
+			return errors.New("get fail answer")
+		} else {
+			log.Println(time.Now().Format(time.RubyDate) + " 打卡成功")
+		}
 		return nil
 	}
 }
